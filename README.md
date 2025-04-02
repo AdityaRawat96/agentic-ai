@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Project Analytics Dashboard
 
-## Getting Started
+A Next.js application that helps you monitor and analyze your projects by tracking errors and issues from Google Search API.
 
-First, run the development server:
+## Features
+
+- Create, read, update, and delete projects
+- Track project URLs and monitor their status
+- Fetch and display errors from Google Search API
+- View analytics and statistics for each project
+- Modern and responsive UI with Tailwind CSS
+
+## Prerequisites
+
+- Node.js 18.x or later
+- PostgreSQL database (using Neon in this example)
+- Google Search API credentials (for production use)
+
+## Setup
+
+1. Clone the repository:
+
+```bash
+git clone <repository-url>
+cd project-analytics-dashboard
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Set up your environment variables:
+   Create a `.env` file in the root directory with the following content:
+
+```
+DATABASE_URL="your-postgresql-connection-string"
+```
+
+4. Run database migrations:
+
+```bash
+npx prisma migrate dev
+```
+
+5. Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The application will be available at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Adding a Project**
 
-## Learn More
+   - Click the "Add Project" button
+   - Enter the project name and URL
+   - Click "Create" to save the project
 
-To learn more about Next.js, take a look at the following resources:
+2. **Viewing Analytics**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   - Switch to the "Analytics" tab
+   - Select a project from the dropdown
+   - Click "Fetch Errors" to get the latest data from Google Search API
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Managing Projects**
+   - Use the edit and delete buttons to modify or remove projects
+   - View project details and associated errors in the analytics view
 
-## Deploy on Vercel
+## Development
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The application is built with:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js 14
+- TypeScript
+- Tailwind CSS
+- Prisma ORM
+- React Query
+- Heroicons
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
+
+## License
+
+This project is licensed under the MIT License.

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ProjectAnalytics from "./ProjectAnalytics";
+import { ProjectAnalytics } from "./ProjectAnalytics";
 import {
   Select,
   SelectContent,

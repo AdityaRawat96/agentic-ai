@@ -6,18 +6,23 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    const resolvedParams = await Promise.resolve(params);
+    const projectId = resolvedParams.id;
+
     const errors = await prisma.error.findMany({
       where: {
-        projectId: params.id,
+        projectId,
       },
       orderBy: {
         createdAt: "desc",
       },
     });
+
     return NextResponse.json(errors);
   } catch (error) {
+    console.error("Error fetching errors:", error);
     return NextResponse.json(
-      { error: "Failed to fetch errors" },
+      { message: "Failed to fetch errors" },
       { status: 500 }
     );
   }

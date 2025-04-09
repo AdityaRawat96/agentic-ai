@@ -23,6 +23,8 @@ model Error {
   title       String
   description String
   severity    String
+  type        String
+  url         String?
   createdAt   DateTime @default(now())
   projectId   String
   project     Project  @relation(fields: [projectId], references: [id])

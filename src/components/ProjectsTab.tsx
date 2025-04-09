@@ -5,20 +5,15 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PlusIcon, TrashIcon, PencilIcon } from "@heroicons/react/24/outline";
 import ProjectForm from "./ProjectForm";
 import { toast } from "sonner";
-
-// --- Import the ProjectFormData type --- Start
-import type { ProjectFormData } from "./ProjectForm"; // Assuming ProjectFormData is exported from ProjectForm
-// --- Import the ProjectFormData type --- End
+import type { ProjectFormData } from "./ProjectForm";
 
 interface Project {
   id: string;
   name: string;
   url: string;
   createdAt: string;
-  // --- Add new fields to Project interface --- Start
   errorTypes?: string[];
   frequency?: string;
-  // --- Add new fields to Project interface --- End
 }
 
 export default function ProjectsTab() {

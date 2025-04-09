@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PlusIcon, TrashIcon, PencilIcon } from "@heroicons/react/24/outline";
 import ProjectForm from "./ProjectForm";
 import { toast } from "sonner";
@@ -16,22 +16,14 @@ interface Project {
   frequency?: string;
 }
 
-export default function ProjectsTab() {
+interface ProjectsTabProps {
+  projects: Project[];
+}
+
+export default function ProjectsTab({ projects }: ProjectsTabProps) {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const queryClient = useQueryClient();
-
-  // Fetch projects query
-  const { data: projects, isLoading } = useQuery<Project[]>({
-    queryKey: ["projects"],
-    queryFn: async () => {
-      const response = await fetch("/api/projects");
-      if (!response.ok) {
-        throw new Error("Failed to fetch projects");
-      }
-      return response.json();
-    },
-  });
 
   // Create project mutation
   const createMutation = useMutation({
@@ -129,24 +121,7 @@ export default function ProjectsTab() {
       )}
 
       <div className="bg-white shadow overflow-hidden sm:rounded-md">
-        {isLoading ? (
-          <ul className="divide-y divide-gray-200">
-            {[...Array(5)].map((_, index) => (
-              <li key={index} className="px-6 py-4 animate-pulse">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="h-4 bg-gray-300 rounded w-32 mb-2"></div>
-                    <div className="h-3 bg-gray-200 rounded w-24"></div>
-                  </div>
-                  <div className="flex space-x-2">
-                    <div className="h-5 w-5 bg-gray-300 rounded"></div>
-                    <div className="h-5 w-5 bg-gray-300 rounded"></div>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : projects && projects.length > 0 ? (
+        {projects && projects.length > 0 ? (
           <ul className="divide-y divide-gray-200">
             {projects.map((project: Project) => (
               <li key={project.id} className="px-6 py-4">

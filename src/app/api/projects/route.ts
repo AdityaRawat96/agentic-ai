@@ -10,6 +10,7 @@ export async function GET() {
     });
     return NextResponse.json(projects);
   } catch (error) {
+    console.error("Failed to fetch projects:", error);
     return NextResponse.json(
       { error: "Failed to fetch projects" },
       { status: 500 }
@@ -24,10 +25,13 @@ export async function POST(request: Request) {
       data: {
         name: body.name,
         url: body.url,
+        errorTypes: body.errorTypes || [],
+        frequency: body.frequency || "weekly",
       },
     });
     return NextResponse.json(project);
   } catch (error) {
+    console.error("Create Project Error:", error);
     return NextResponse.json(
       { error: "Failed to create project" },
       { status: 500 }

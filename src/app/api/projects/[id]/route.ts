@@ -14,10 +14,13 @@ export async function PUT(
       data: {
         name: body.name,
         url: body.url,
+        errorTypes: body.errorTypes,
+        frequency: body.frequency,
       },
     });
     return NextResponse.json(project);
   } catch (error) {
+    console.error(`Failed to update project ${params.id}:`, error);
     return NextResponse.json(
       { error: "Failed to update project" },
       { status: 500 }
@@ -37,6 +40,7 @@ export async function DELETE(
     });
     return NextResponse.json({ message: "Project deleted successfully" });
   } catch (error) {
+    console.error(`Failed to delete project ${params.id}:`, error);
     return NextResponse.json(
       { error: "Failed to delete project" },
       { status: 500 }

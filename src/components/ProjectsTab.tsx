@@ -6,11 +6,19 @@ import { PlusIcon, TrashIcon, PencilIcon } from "@heroicons/react/24/outline";
 import ProjectForm from "./ProjectForm";
 import { toast } from "sonner";
 
+// --- Import the ProjectFormData type --- Start
+import type { ProjectFormData } from "./ProjectForm"; // Assuming ProjectFormData is exported from ProjectForm
+// --- Import the ProjectFormData type --- End
+
 interface Project {
   id: string;
   name: string;
   url: string;
   createdAt: string;
+  // --- Add new fields to Project interface --- Start
+  errorTypes?: string[];
+  frequency?: string;
+  // --- Add new fields to Project interface --- End
 }
 
 export default function ProjectsTab() {
@@ -32,12 +40,16 @@ export default function ProjectsTab() {
 
   // Create project mutation
   const createMutation = useMutation({
-    mutationFn: async (data: { name: string; url: string }) => {
+    mutationFn: async (data: ProjectFormData) => {
       const response = await fetch("/api/projects", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to create project");
+      }
       return response.json();
     },
     onSuccess: () => {
@@ -66,18 +78,16 @@ export default function ProjectsTab() {
 
   // Update project mutation
   const updateMutation = useMutation({
-    mutationFn: async ({
-      id,
-      data,
-    }: {
-      id: string;
-      data: { name: string; url: string };
-    }) => {
+    mutationFn: async ({ id, data }: { id: string; data: ProjectFormData }) => {
       const response = await fetch(`/api/projects/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to update project");
+      }
       return response.json();
     },
     onSuccess: () => {
@@ -91,7 +101,7 @@ export default function ProjectsTab() {
     },
   });
 
-  const handleFormSubmit = (data: { name: string; url: string }) => {
+  const handleFormSubmit = (data: ProjectFormData) => {
     if (editingProject) {
       updateMutation.mutate({ id: editingProject.id, data });
     } else {
@@ -141,9 +151,9 @@ export default function ProjectsTab() {
               </li>
             ))}
           </ul>
-        ) : (
+        ) : projects && projects.length > 0 ? (
           <ul className="divide-y divide-gray-200">
-            {projects?.map((project: Project) => (
+            {projects.map((project: Project) => (
               <li key={project.id} className="px-6 py-4">
                 <div className="flex items-center justify-between">
                   <div>
@@ -175,6 +185,15 @@ export default function ProjectsTab() {
               </li>
             ))}
           </ul>
+        ) : (
+          <div className="text-center py-10 px-6">
+            <h3 className="text-lg font-medium text-gray-900">
+              No Projects Found
+            </h3>
+            <p className="text-sm text-gray-500 mt-1">
+              Get started by adding your first project.
+            </p>
+          </div>
         )}
       </div>
     </>
